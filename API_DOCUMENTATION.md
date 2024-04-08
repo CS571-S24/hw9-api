@@ -7,7 +7,7 @@ All routes are relative to `https://cs571.org/api/s24/hw9/`
 | Method | URL | Purpose | Return Codes |
 | --- | --- | --- | --- |
 | `GET`| `/chatrooms` | Get all chatrooms. | 200, 304 |
-| `GET` | `/messages?chatroom=NAME&page=NUM`| Get latest messages for specified chatroom and page. | 200, 400, 404 |
+| `GET` | `/messages?chatroom=NAME`| Get latest messages for specified chatroom. | 200, 404 |
 | `POST` | `/messages?chatroom=NAME` | Posts a message to the specified chatroom. | 200, 400, 404, 413 |
 | `DELETE` | `/messages?id=ID` | Deletes the given message. | 200, 400, 401, 404 |
 | `POST` | `/register` | Registers a user account. | 200, 400, 409, 413  |
@@ -27,29 +27,26 @@ A `200` (new) or `304` (cached) response will be sent with the list of all chatr
 
 ```json
 [
-    "Bascom Hill Chatters",
-    "Memorial Union Hangout",
-    "Lake Mendota Viewpoint",
-    "State Street Strollers",
-    "Camp Randall Roar",
-    "Aldo Leopold Nature Talks",
-    "Wisconsin State Capitol Debates",
-    "Monona Terrace Meetups",
-    "Henry Vilas Zoo Enthusiasts",
-    "Chazen Art Appreciation"
+  "Buckys Badger Den",
+  "Union South Socials",
+  "Picnic Point Pathfinders",
+  "Engineering Hall Exchange",
+  "Kohl Center Kudos",
+  "Grainger Hall Gatherings",
+  "Lakeshore Path Pioneers",
+  "Science Hall Scholars"
 ]
 ```
 
 ### Getting Messages for Chatroom
 
-`GET` `https://cs571.org/api/s24/hw9/messages?chatroom=CHATROOM_NAME&page=PAGE_NUM`
+`GET` `https://cs571.org/api/s24/hw9/messages?chatroom=CHATROOM_NAME`
 
-There is no get all messages; you must get messages for a particular `chatroom`. **All messages are public**, you do *not* need to be logged in to access them. Furthermore, a `page` may be specified. Each `page` contains up to 25 messages, and there are up to 4 pages. Messages made over 100 messages ago are no longer accessible via the API. A `200` (new) or `304` (cached) response will be sent with messages organized from most recent to least recent. Note that the `created` field is in a ISO 8601 format.
+There is no get all messages; you must get messages for a particular `chatroom`. **All messages are public**, you do *not* need to be logged in to access them. Messages made over 100 messages ago are no longer accessible via the API. A `200` (new) or `304` (cached) response will be sent with messages organized from most recent to least recent. Note that the `created` field is in a ISO 8601 format.
 
 ```json
 {
     "msg": "Successfully got the latest messages!",
-    "page": 1,
     "messages": [
         {
             "id": 2,
@@ -68,14 +65,6 @@ There is no get all messages; you must get messages for a particular `chatroom`.
             "created": "2023-10-14T20:48:53.000Z"
         }
     ]
-}
-```
-
-If an invalid page number is specified, a `400` will be returned.
-
-```json
-{
-    "msg": "A page number must be between 1 and 4."
 }
 ```
 
